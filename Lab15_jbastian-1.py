@@ -26,7 +26,7 @@ for row in reader:                                              # json eq_dict i
     lon = float(row[1])                                         # json eq_dict['geometry']['coordinates'][0]
     lat = float(row[0])                                         # json eq_dict['geometry']['coordinates'][1]
     date = str(row[5])
-    hover_text = f"({row[1]}°, {row[0]}°)\n{row[5]}"            # hover_text for date
+    hover_text = f"{row[5]}"                                    # hover_text for date, f"({row[0]}°, {row[1]}°)<br>{row[5]}" unnecessary since hovertemplate=None automatic
     hover_texts.append(hover_text)
     brights.append(bright)                                      # go through dictionaries, json mags
     lons.append(lon)
@@ -43,13 +43,8 @@ def populate_and_show_plot_values():
 
     fig.update_traces(
         marker=dict(size=15),
+        hovertemplate=None,
     )
-
-    """
-    fig.update_traces(
-        hovertemplate="({lats}°"{lons}°)\n"
-    )
-    """
 
     fig.show()
 
