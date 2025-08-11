@@ -8,7 +8,9 @@ Date: Sunday, August 10, 2025
 from pathlib import Path
 import csv                                                      # standard; or json if json file
 
-import plotly.express as px                                     # json plotly.express px
+import pandas as pd
+import plotly.express as px
+
 
 # Read data as a string and convert to a Python object.
 path = Path('eq_data/world_fires_1_day.csv')                    # (copying textbook) eq_data - any path look for it at, copy relative path, ex. eq_data/eq_data_1_day_m1.json
@@ -17,7 +19,7 @@ reader = csv.reader(lines)                                      # all_eq_data = 
 header_row = next(reader)                                       # all_eq_dicts = all_eq_data["features"] # grab out of features
 print(header_row)                                               # look at ex. all_eq_dicts
 
-# latitude,longitude,brightness,scan,track,acq_date,acq_time,satellite,confidence,version,bright_t31,frp,daynight
+# latitude, longitude, brightness, scan, track, acq_date, acq_time, satellite, confidence, version, bright_t31, frp, daynight
 brights, hover_texts, lons, lats, dates = [], [], [], [], []    # extract list of mags/magnitures, longitudes, latitudes out of list all data, and give coordinates
 for row in reader:                                              # json eq_dict in all_eq_dicts
     hover_text = float(row[10])                                 # hover_text for date
@@ -31,22 +33,24 @@ for row in reader:                                              # json eq_dict i
     lats.append(lat)
     dates.append(date)
 
-"""
-# Plot the high temperatures
-px.style.use('seaborn-v0_8')
-fig, ax = px.subplots()
-ax.plot(brights, color='blue')
-
-# Format plot
-ax.set_title("World Fires, Day 1", fontsize=24)
-ax.set_xlabel('', fontzie=16)
-ax.set_ylabel("Brightness", fontsize=16)
-ax.tick_params(labelsize=16)
-"""
-
 def populate_and_show_plot_values():
-    title = "Global Fires"                                      # Earthquakes
-    fig = px.scatter_geo(lat=lats, lon=lons, hover_name=hover_texts)         # pass in scatter geo so could put into earth automaically, size=mags, title=title
+    title = "Global Fires"                                      # Earthquakes, (°, °) 2018-09-22
+    fig = px.scatter_geo(
+        title=title,
+        hover_name=hover_texts, lat=lats, lon=lons,
+        color=brights, color_continuous_scale='Bluered_r', labels={'color':'Brightness'},
+        )                                                       # pass in scatter geo so could put into earth automaically, size=mags
+
+    fig.update_traces(
+        marker=dict(size=15),
+    )
+
+    """
+    fig.update_traces(
+        hovertemplate="({lats}°"{lons}°)\n"
+    )
+    """
+
     fig.show()
 
 populate_and_show_plot_values()
