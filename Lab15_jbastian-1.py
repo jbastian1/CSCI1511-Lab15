@@ -70,15 +70,3 @@ populate_and_show_plot_values()
 # $ python3 -m pip install --user pandas
 # pip freeze > requirements.txt
 # can pull dataset to pull from blackboard - any kind of file, textbook; csv (comma separated value) files - might be easier to work with, json, right click save link
-
-# short answers: difference CSV and JSON
-# ME textbook:
-# JSON (JavaScript Object Notation) module, allows to save user data so it isn't lost when your program stops running,
-#   allows you to convert simple Python data structures into JSON-formatted strings, then load data from file next time program runs
-#   can use json to share data between different PYthon programs
-#   not specific to Python so can share data store in the JSON format people who work many other programming languages
-#   useful portable format easy to learn
-# CSV (Comma Separated Values) module, (simple way to store data in a text file), series of values separated by commas called comma-separated values
-#   can be tedious to read but programs can process and extract information from them quickly and accurately
-
-# ME: JSON, or JavaScript Object Notation and CSV, or Comma Separated Values, are both formats for storing data in text files; JSON despite having JavaScript in it's name is used by other languages. CSV is the simpler of the two, involving numbers and text stored in a table where a series of values are separated by commas, similar to a spreadsheet with rows and columns. While CSV is harder for humans to read, programs can quickly find and process the information, given that they are stored in plain text files which are more compact and can be opened in text editors. CSV files are also more secure than JSON files. JSON is more complicated, utilizing fields for storing objects as name-value pairs and small arrays, similar to a dictionary. JSON is also more readable than CSV, due to it's more organized formatting, involving nesting and hierarchies, this formatting also allows for scaling. JSON can be used to share data between different programs in many different languages including Python, making it widely portable, which is why it tends to be used for APIs and data configuration.
