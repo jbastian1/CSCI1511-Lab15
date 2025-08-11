@@ -22,11 +22,11 @@ print(header_row)                                               # look at ex. al
 # latitude, longitude, brightness, scan, track, acq_date, acq_time, satellite, confidence, version, bright_t31, frp, daynight
 brights, hover_texts, lons, lats, dates = [], [], [], [], []    # extract list of mags/magnitures, longitudes, latitudes out of list all data, and give coordinates
 for row in reader:                                              # json eq_dict in all_eq_dicts
-    hover_text = float(row[10])                                 # hover_text for date
     bright = float(row[2])                                      # json eq_dict['properties']['mag'], brights for magnitude
     lon = float(row[1])                                         # json eq_dict['geometry']['coordinates'][0]
     lat = float(row[0])                                         # json eq_dict['geometry']['coordinates'][1]
     date = str(row[5])
+    hover_text = f"({row[1]}°, {row[0]}°)\n{row[5]}"            # hover_text for date
     hover_texts.append(hover_text)
     brights.append(bright)                                      # go through dictionaries, json mags
     lons.append(lon)
@@ -34,7 +34,7 @@ for row in reader:                                              # json eq_dict i
     dates.append(date)
 
 def populate_and_show_plot_values():
-    title = "Global Fires"                                      # Earthquakes, ? (°, °) 2018-09-22
+    title = "Global Fires"                                      # Earthquakes
     fig = px.scatter_geo(
         title=title,
         hover_name=hover_texts, lat=lats, lon=lons,
@@ -56,5 +56,3 @@ def populate_and_show_plot_values():
 populate_and_show_plot_values()
 
 # ?try-except-else block avoid any invalid data?
-# csv section book create lists, second section set up .html file to view the data with the global map
-# use either simple method to set up form Scattergeo data = [Scattergeo(lon=lons, lat=lats)] or set up more complex model with colormap, using hover texts and a clormap
