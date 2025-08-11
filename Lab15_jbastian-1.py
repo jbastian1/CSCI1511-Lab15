@@ -1,7 +1,7 @@
 """
 Program: Mapping Global Datasets from the Book
 Author: Jonathan Bastian
-The program maps positions to global positions taken from a data file, along with brightness for magnitude. Lists are created from the fields in each row.
+The program maps the positions of world fires to global positions taken from a data file, along with brightness. The map includes text if hovered over and a color gradiant.
 Date: Sunday, August 10, 2025
 """
 
@@ -14,7 +14,7 @@ import plotly.express as px
 
 # Read data as a string and convert to a Python object.
 path = Path('eq_data/world_fires_1_day.csv')                    # (copying textbook) eq_data - any path look for it at, copy relative path, ex. eq_data/eq_data_1_day_m1.json
-lines = path.read_text(encoding="utf-8").splitlines()           # ?splitlines?, jsons contents
+lines = path.read_text(encoding="utf-8").splitlines()           # csv added splitlines, jsons contents
 reader = csv.reader(lines)                                      # all_eq_data = json.loads(contents)
 header_row = next(reader)                                       # all_eq_dicts = all_eq_data["features"] # grab out of features
 print(header_row)                                               # look at ex. all_eq_dicts
@@ -34,7 +34,7 @@ for row in reader:                                              # json eq_dict i
     dates.append(date)
 
 def populate_and_show_plot_values():
-    title = "Global Fires"                                      # Earthquakes, (°, °) 2018-09-22
+    title = "Global Fires"                                      # Earthquakes, ? (°, °) 2018-09-22
     fig = px.scatter_geo(
         title=title,
         hover_name=hover_texts, lat=lats, lon=lons,
@@ -58,15 +58,3 @@ populate_and_show_plot_values()
 # ?try-except-else block avoid any invalid data?
 # csv section book create lists, second section set up .html file to view the data with the global map
 # use either simple method to set up form Scattergeo data = [Scattergeo(lon=lons, lat=lats)] or set up more complex model with colormap, using hover texts and a clormap
-
-
-# looks similar but is different Lab 14
-# (super simple spreadsheet comma separated values rows columns CSV data (tutorial video & textbook)
-# trickier specified fields object with variables in it object, field names can have data, oriented notation like dictionary but each different, doesn't have large arrays more than a few objects each, doesn't go any deeper JSON/marketing Java Script Notation)
-# about getting the data from the internet to use, two options 1 described 2 book suggestion (Try it Yourself 16.9) extra help advice
-# downloading file a lot of data and passing to plotting, also plotly visualizations digital devices resizes (vs matplotlib charts/charting simple less flexible)
-# also install plotly express
-# $ python3 -m pip install --user plotly        difference using not very pronounced
-# $ python3 -m pip install --user pandas
-# pip freeze > requirements.txt
-# can pull dataset to pull from blackboard - any kind of file, textbook; csv (comma separated value) files - might be easier to work with, json, right click save link
