@@ -6,35 +6,55 @@ Date: Sunday, August 10, 2025
 """
 
 from pathlib import Path
-import json                     # standard
+import csv                                                      # standard; or json if json file
 
-import plotly.express as px
+import plotly.express as px                                     # json plotly.express px
 
 # Read data as a string and convert to a Python object.
-path = Path('eq_data/eq_data_1_day_m1.json')             # (copying textbook) eq_data - any path look for it at, copy relative path
-contents = path.read_text(encoding="utf-8")
-all_eq_data = json.loads(contents)
-all_eq_dicts = all_eq_data["features"] # grab out of features
-print(all_eq_dicts) # look at
+path = Path('eq_data/world_fires_1_day.csv')                    # (copying textbook) eq_data - any path look for it at, copy relative path, ex. eq_data/eq_data_1_day_m1.json
+lines = path.read_text(encoding="utf-8").splitlines()           # ?splitlines?, jsons contents
+reader = csv.reader(lines)                                      # all_eq_data = json.loads(contents)
+header_row = next(reader)                                       # all_eq_dicts = all_eq_data["features"] # grab out of features
+print(header_row)                                               # look at ex. all_eq_dicts
 
-mags, lons, lats = [], [], [] # extract list of magnitures, longitudes, latitudes out of list all data, and give coordinates
-for eq_dict in all_eq_dicts:
-    mag = eq_dict['properties']['mag']
-    lon = eq_dict['geometry']['coordinates'][0]
-    lat = eq_dict['geometry']['coordinates'][1]
-    mags.append(mag) # go through dictionaries
+# latitude,longitude,brightness,scan,track,acq_date,acq_time,satellite,confidence,version,bright_t31,frp,daynight
+brights, hover_texts, lons, lats, dates = [], [], [], [], []    # extract list of mags/magnitures, longitudes, latitudes out of list all data, and give coordinates
+for row in reader:                                              # json eq_dict in all_eq_dicts
+    hover_text = float(row[10])                                 # hover_text for date
+    bright = float(row[2])                                      # json eq_dict['properties']['mag'], brights for magnitude
+    lon = float(row[1])                                         # json eq_dict['geometry']['coordinates'][0]
+    lat = float(row[0])                                         # json eq_dict['geometry']['coordinates'][1]
+    date = str(row[5])
+    hover_texts.append(hover_text)
+    brights.append(bright)                                      # go through dictionaries, json mags
     lons.append(lon)
     lats.append(lat)
+    dates.append(date)
 
+"""
+# Plot the high temperatures
+px.style.use('seaborn-v0_8')
+fig, ax = px.subplots()
+ax.plot(brights, color='blue')
+
+# Format plot
+ax.set_title("World Fires, Day 1", fontsize=24)
+ax.set_xlabel('', fontzie=16)
+ax.set_ylabel("Brightness", fontsize=16)
+ax.tick_params(labelsize=16)
+"""
 
 def populate_and_show_plot_values():
-    title = "Global Earthquakes"
-    fig = px.scatter_geo(lat=lats, lon=lons, size=mags, title=title) # pass in scatter geo so could put into earth automaically
+    title = "Global Fires"                                      # Earthquakes
+    fig = px.scatter_geo(lat=lats, lon=lons, hover_name=hover_texts)         # pass in scatter geo so could put into earth automaically, size=mags, title=title
     fig.show()
 
-
-
 populate_and_show_plot_values()
+
+# ?try-except-else block avoid any invalid data?
+# csv section book create lists, second section set up .html file to view the data with the global map
+# use either simple method to set up form Scattergeo data = [Scattergeo(lon=lons, lat=lats)] or set up more complex model with colormap, using hover texts and a clormap
+
 
 # looks similar but is different Lab 14
 # (super simple spreadsheet comma separated values rows columns CSV data (tutorial video & textbook)
