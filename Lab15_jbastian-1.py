@@ -22,16 +22,20 @@ print(header_row)                                               # look at ex. al
 # latitude, longitude, brightness, scan, track, acq_date, acq_time, satellite, confidence, version, bright_t31, frp, daynight
 brights, hover_texts, lons, lats, dates = [], [], [], [], []    # extract list of mags/magnitures, longitudes, latitudes out of list all data, and give coordinates
 for row in reader:                                              # json eq_dict in all_eq_dicts
-    bright = float(row[2])                                      # json eq_dict['properties']['mag'], brights for magnitude
-    lon = float(row[1])                                         # json eq_dict['geometry']['coordinates'][0]
-    lat = float(row[0])                                         # json eq_dict['geometry']['coordinates'][1]
-    date = str(row[5])
-    hover_text = f"{row[5]}"                                    # hover_text for date, f"({row[0]}°, {row[1]}°)<br>{row[5]}" unnecessary since hovertemplate=None automatic
-    hover_texts.append(hover_text)
-    brights.append(bright)                                      # go through dictionaries, json mags
-    lons.append(lon)
-    lats.append(lat)
-    dates.append(date)
+    try:
+        bright = float(row[2])                                  # json eq_dict['properties']['mag'], brights for magnitude
+        lon = float(row[1])                                     # json eq_dict['geometry']['coordinates'][0]
+        lat = float(row[0])                                     # json eq_dict['geometry']['coordinates'][1]
+        date = str(row[5])
+        hover_text = f"{row[5]}"                                # hover_text for date, f"({row[0]}°, {row[1]}°)<br>{row[5]}" unnecessary since hovertemplate=None automatic
+    except:
+        print(f"ValueError.")
+    else:
+        hover_texts.append(hover_text)
+        brights.append(bright)                                  # go through dictionaries, json mags
+        lons.append(lon)
+        lats.append(lat)
+        dates.append(date)
 
 def populate_and_show_plot_values():
     title = "Global Fires"                                      # Earthquakes
@@ -49,5 +53,3 @@ def populate_and_show_plot_values():
     fig.show()
 
 populate_and_show_plot_values()
-
-# ?try-except-else block avoid any invalid data?
